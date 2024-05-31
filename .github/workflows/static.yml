@@ -17,7 +17,7 @@ jobs:
       - name: Install Node.js and npm
         uses: actions/setup-node@v2
         with:
-          node-version: 'latest'
+          node-version: '20'
 
       - name: Install ESLint
         run: npm install eslint --save-dev
