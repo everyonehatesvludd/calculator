@@ -2,45 +2,40 @@ name: Deploy Calculator
 
 on:
   push:
-    branches: ["main"]
-
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Install eslint
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install ESLint
         run: npm install eslint --save-dev
 
-      - name: Install eslint config
+      - name: Install ESLint Recommended Configuration
         run: npm install eslint-config-eslint --save-dev
 
-      - name: Run eslin
+      - name: Lint HTML Files
         run: |
           npx eslint --ext .html --config eslint:recommended .
-          
+          # Adjust the eslint command based on your project structure and preferences
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages  # Branch to deploy to
+          FOLDER: .  # Folder or directory to deploy
