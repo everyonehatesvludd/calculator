@@ -1,32 +1,35 @@
-name: Deploy calculator
+name: ESLint
 
+# Controls when the action will run
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  # This workflow contains a single job called "lint"
+  lint:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
-      - name: Install Node.js and npm
-        uses: actions/setup-node@v2
+      # Installs Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: latest
 
-      - name: Install ESLint
-        run: npm install eslint --save-dev
+      # Installs the project dependencies
+      - name: Install dependencies
+        run: npm ci
 
+      # Runs ESLint with the recommended configuration
       - name: Run ESLint
-        run: npx eslint script.js --ext .js
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: .
+        run: npx eslint . --ext .js --config eslint:recommended
