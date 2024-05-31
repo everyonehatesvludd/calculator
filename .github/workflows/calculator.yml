@@ -25,13 +25,8 @@ jobs:
       - name: Install ESLint
         run: npm install eslint --save-dev
 
-      - name: Install ESLint Recommended Configuration
-        run: npm install eslint-config-eslint --save-dev
-
       - name: Lint HTML Files
-        run: |
-          npx eslint --ext .html --config eslint:recommended .
-          # Adjust the eslint command based on your project structure and preferences
+        run: npx eslint --ext .html --config eslint.config.js .
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
