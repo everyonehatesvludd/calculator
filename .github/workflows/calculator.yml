@@ -16,11 +16,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Install Node.js
+      
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '20'
 
       - name: Install ESLint
         run: npm install eslint --save-dev
@@ -37,5 +37,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages  # Branch to deploy to
-          FOLDER: .  # Folder or directory to deploy
+          BRANCH: gh-pages 
+          FOLDER: . 
